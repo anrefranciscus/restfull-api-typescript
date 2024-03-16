@@ -14,4 +14,8 @@ export class UserController {
             next(e)
         }
     }
+
+    static async login(req: Request, res: Response, next: NextFunction) {
+
+    }
 }
