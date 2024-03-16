@@ -3,7 +3,7 @@ import {prismaClient} from "../application/database";
 import {UserRequest} from "../type/user-request";
 
 export const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction) => {
-    const token = request.get("X-API-TOKEN")
+    const token = req.get("X-API-TOKEN")
 
     if(token) {
         const user = await prismaClient.user.findFirst({

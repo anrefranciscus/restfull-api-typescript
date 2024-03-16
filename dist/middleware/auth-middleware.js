@@ -10,10 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
-const express_1 = require("express");
 const database_1 = require("../application/database");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = express_1.request.get("X-API-TOKEN");
+    const token = req.get("X-API-TOKEN");
     if (token) {
         const user = yield database_1.prismaClient.user.findFirst({
             where: {
