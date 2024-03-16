@@ -19,7 +19,7 @@ const user_validation_1 = require("../validation/user-validation");
 const database_1 = require("../application/database");
 const response_error_1 = require("../error/response-error");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const uuid_1 = require("uuid");
+const auth_1 = require("../utils/auth");
 class UserService {
     static register(request) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -59,7 +59,7 @@ class UserService {
                     username: loginRequest.username
                 },
                 data: {
-                    token: (0, uuid_1.v4)()
+                    token: (0, auth_1.generateToken)(request.username)
                 }
             });
             const response = (0, user_model_1.toUserResponse)(user);

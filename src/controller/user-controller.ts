@@ -2,14 +2,10 @@ import {Request, Response, NextFunction} from "express";
 import {
     CreateUserRequest,
     LoginUserRequest,
-    toUserResponse,
     UpdateUserRequest,
-    UserResponse
 } from "../model/user-model";
 import {UserService} from "../service/user-service";
 import {UserRequest} from "../type/user-request";
-import {User} from "@prisma/client";
-import {prismaClient} from "../application/database";
 
 export class UserController {
     static async register(req: Request, res: Response, next: NextFunction) {
@@ -54,7 +50,6 @@ export class UserController {
             res.status(200).json({
                 data: response
             })
-
         } catch (e) {
             next(e)
         }
@@ -66,7 +61,6 @@ export class UserController {
             res.status(200).json({
                 data: "ok"
             })
-
         } catch (e) {
             next(e)
         }

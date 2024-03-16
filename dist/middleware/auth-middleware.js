@@ -11,22 +11,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
+const auth_1 = require("../utils/auth");
+const jsonwebtoken_1 = require("jsonwebtoken");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.get("X-API-TOKEN");
-    if (token) {
-        const user = yield database_1.prismaClient.user.findFirst({
-            where: {
-                token: token
+    try {
+        const authorizationHeader = req.get("Authorization");
+        if (authorizationHeader != null) {
+            const decodedToken = (0, auth_1.decodeJWT)(authorizationHeader);
+            if (decodedToken) {
+                const user = yield database_1.prismaClient.user.findFirst({
+                    where: {
+                        token: authorizationHeader
+                    }
+                });
+                if (user) {
+                    req.user = user;
+                    next();
+                    return;
+                }
             }
-        });
-        if (user) {
-            req.user = user;
-            next();
-            return;
         }
+        res.status(401).json({
+            errors: "Unauthorized"
+        }).end();
     }
-    res.status(401).json({
-        errors: "Unauthorized"
-    }).end();
+    catch (jwtError) {
+        if (jwtError instanceof jsonwebtoken_1.JsonWebTokenError) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
 });
 exports.authMiddleware = authMiddleware;

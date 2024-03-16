@@ -10,8 +10,9 @@ import {UserValidation} from "../validation/user-validation";
 import {prismaClient} from "../application/database";
 import {ResponseError} from "../error/response-error";
 import bcrypt from "bcrypt"
-import {v4 as uuid} from "uuid"
 import {User} from "@prisma/client";
+import {generateToken} from "../utils/auth";
+
 export class UserService {
     static async register(request: CreateUserRequest) : Promise<UserResponse> {
          const registerRequest = Validation.validate(UserValidation.REGISTER, request);
@@ -23,7 +24,7 @@ export class UserService {
          })
 
          if(totalUserWithSameUsername !== 0) {
-             throw new ResponseError(400,"username already exist");
+             throw new ResponseError(400, "username already exist");
          }
 
          registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
@@ -57,7 +58,7 @@ export class UserService {
                 username: loginRequest.username
             },
             data: {
-                token: uuid()
+                token: generateToken(request.username)
             }
         })
 
