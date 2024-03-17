@@ -1,9 +1,9 @@
-import {Response, NextFunction} from "express";
+import {NextFunction, Response} from "express";
 import {prismaClient} from "../application/database";
 import {UserRequest} from "../type/user-request";
 import {decodeJWT} from "../utils/auth";
 import {JsonWebTokenError} from "jsonwebtoken";
-import {ResponseError} from "../error/response-error";
+import {buildApiResponse, HttpStatus, StatusMessage} from "../utils/handler-response";
 
 export const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction) => {
     try {
@@ -27,14 +27,12 @@ export const authMiddleware = async (req: UserRequest, res: Response, next: Next
             }
         }
 
-        res.status(401).json({
-            errors: "Unauthorized"
-        }).end()
+        buildApiResponse(res, HttpStatus.UNAUTHORIZED, StatusMessage.UNAUTHORIZED)
 
     }catch (jwtError) {
         if (jwtError instanceof JsonWebTokenError) {
-            return res.status(401).json({ message: 'Invalid token' });
+            buildApiResponse(res, HttpStatus.UNAUTHORIZED, StatusMessage.INVALID_TOKEN)
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        buildApiResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, StatusMessage.INTERNAL_SERVER_ERROR)
     }
 }

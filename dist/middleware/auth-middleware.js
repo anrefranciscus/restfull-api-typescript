@@ -13,6 +13,7 @@ exports.authMiddleware = void 0;
 const database_1 = require("../application/database");
 const auth_1 = require("../utils/auth");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const handler_response_1 = require("../utils/handler-response");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authorizationHeader = req.get("Authorization");
@@ -31,15 +32,13 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
         }
-        res.status(401).json({
-            errors: "Unauthorized"
-        }).end();
+        (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.UNAUTHORIZED, handler_response_1.StatusMessage.UNAUTHORIZED);
     }
     catch (jwtError) {
         if (jwtError instanceof jsonwebtoken_1.JsonWebTokenError) {
-            return res.status(401).json({ message: 'Invalid token' });
+            (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.UNAUTHORIZED, handler_response_1.StatusMessage.INVALID_TOKEN);
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.INTERNAL_SERVER_ERROR, handler_response_1.StatusMessage.INTERNAL_SERVER_ERROR);
     }
 });
 exports.authMiddleware = authMiddleware;

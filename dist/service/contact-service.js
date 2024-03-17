@@ -14,6 +14,7 @@ const contact_model_1 = require("../model/contact-model");
 const validation_1 = require("../validation/validation");
 const contact_validation_1 = require("../validation/contact-validation");
 const database_1 = require("../application/database");
+const response_error_1 = require("../error/response-error");
 class ContactService {
     static create(user, request) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,6 +23,20 @@ class ContactService {
             const contact = yield database_1.prismaClient.contact.create({
                 data: record
             });
+            return (0, contact_model_1.toContactResponse)(contact);
+        });
+    }
+    static get(user, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const contact = yield database_1.prismaClient.contact.findUnique({
+                where: {
+                    id: id,
+                    username: user.username
+                }
+            });
+            if (!contact) {
+                throw new response_error_1.ResponseError(404, "contact not found");
+            }
             return (0, contact_model_1.toContactResponse)(contact);
         });
     }

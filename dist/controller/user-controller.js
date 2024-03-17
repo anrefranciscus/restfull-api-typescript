@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_service_1 = require("../service/user-service");
+const handler_response_1 = require("../utils/handler-response");
 class UserController {
     static register(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,9 +32,7 @@ class UserController {
             try {
                 const request = req.body;
                 const response = yield user_service_1.UserService.login(request);
-                res.status(200).json({
-                    data: response
-                });
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {
                 next(e);
@@ -44,9 +43,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield user_service_1.UserService.get(req.user);
-                res.status(200).json({
-                    data: response
-                });
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {
                 next(e);
@@ -58,9 +55,7 @@ class UserController {
             try {
                 const request = req.body;
                 const response = yield user_service_1.UserService.update(req.user, request);
-                res.status(200).json({
-                    data: response
-                });
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {
                 next(e);
@@ -71,9 +66,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield user_service_1.UserService.logout(req.user);
-                res.status(200).json({
-                    data: "ok"
-                });
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, handler_response_1.StatusMessage.LOGOUT);
             }
             catch (e) {
                 next(e);
