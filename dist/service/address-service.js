@@ -27,7 +27,7 @@ class AddressService {
             return (0, address_model_1.toAddressResponse)(address);
         });
     }
-    static checkAdressMustExist(contactId, addressId) {
+    static checkAddressMustExist(contactId, addressId) {
         return __awaiter(this, void 0, void 0, function* () {
             const address = yield database_1.prismaClient.address.findFirst({
                 where: {
@@ -45,7 +45,7 @@ class AddressService {
         return __awaiter(this, void 0, void 0, function* () {
             const getRequest = validation_1.Validation.validate(address_validation_1.AddressValidation.GET, request);
             yield contact_service_1.ContactService.checkContactMustExist(user.username, request.contact_id);
-            const address = yield this.checkAdressMustExist(getRequest.contact_id, getRequest.id);
+            const address = yield this.checkAddressMustExist(getRequest.contact_id, getRequest.id);
             return (0, address_model_1.toAddressResponse)(address);
         });
     }
@@ -53,7 +53,7 @@ class AddressService {
         return __awaiter(this, void 0, void 0, function* () {
             const updateRequest = validation_1.Validation.validate(address_validation_1.AddressValidation.Update, request);
             yield contact_service_1.ContactService.checkContactMustExist(user.username, request.contact_id);
-            yield this.checkAdressMustExist(updateRequest.contact_id, updateRequest.id);
+            yield this.checkAddressMustExist(updateRequest.contact_id, updateRequest.id);
             const address = yield database_1.prismaClient.address.update({
                 where: {
                     id: updateRequest.id,
@@ -68,7 +68,7 @@ class AddressService {
         return __awaiter(this, void 0, void 0, function* () {
             const removeAddressRequest = validation_1.Validation.validate(address_validation_1.AddressValidation.GET, request);
             yield contact_service_1.ContactService.checkContactMustExist(user.username, request.contact_id);
-            yield this.checkAdressMustExist(removeAddressRequest.contact_id, removeAddressRequest.id);
+            yield this.checkAddressMustExist(removeAddressRequest.contact_id, removeAddressRequest.id);
             const address = yield database_1.prismaClient.address.delete({
                 where: {
                     id: removeAddressRequest.id,
