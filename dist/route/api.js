@@ -16,3 +16,6 @@ exports.apiRouter.patch("/api/users/current", user_controller_1.UserController.u
 exports.apiRouter.delete("/api/users/current", user_controller_1.UserController.logout);
 //Contact API
 exports.apiRouter.post("/api/contacts", contact_controller_1.ContactController.create);
+exports.apiRouter.get("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.get);
+exports.apiRouter.put("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.update);
+exports.apiRouter.delete("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.remove);

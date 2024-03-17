@@ -18,7 +18,7 @@ class ContactController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = req.body;
-                const response = contact_service_1.ContactService.create(req.user, request);
+                const response = yield contact_service_1.ContactService.create(req.user, request);
                 logging_1.logger.debug("response", response);
                 (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
@@ -33,6 +33,33 @@ class ContactController {
                 const contactId = Number(req.params.contactId);
                 const response = contact_service_1.ContactService.get(req.user, contactId);
                 (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+    }
+    static update(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const request = req.body;
+                request.id = Number(req.params.contactId);
+                const response = yield contact_service_1.ContactService.update(req.user, request);
+                logging_1.logger.debug("response", response);
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+    }
+    static remove(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const contactId = Number(req.params.contactId);
+                const response = yield contact_service_1.ContactService.remove(req.user, contactId);
+                logging_1.logger.debug("response", response);
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, handler_response_1.StatusMessage.Success);
             }
             catch (e) {
                 next(e);

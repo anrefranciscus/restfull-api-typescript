@@ -26,17 +26,49 @@ class ContactService {
             return (0, contact_model_1.toContactResponse)(contact);
         });
     }
-    static get(user, id) {
+    static checkContactMustExist(username, contactId) {
         return __awaiter(this, void 0, void 0, function* () {
             const contact = yield database_1.prismaClient.contact.findUnique({
                 where: {
-                    id: id,
-                    username: user.username
+                    id: contactId,
+                    username: username
                 }
             });
             if (!contact) {
                 throw new response_error_1.ResponseError(404, "contact not found");
             }
+            return contact;
+        });
+    }
+    static get(user, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const contact = yield this.checkContactMustExist(user.username, id);
+            return (0, contact_model_1.toContactResponse)(contact);
+        });
+    }
+    static update(user, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updateRequest = validation_1.Validation.validate(contact_validation_1.ContactValidation.Update, request);
+            yield this.checkContactMustExist(user.username, updateRequest.id);
+            const contact = yield database_1.prismaClient.contact.update({
+                where: {
+                    id: updateRequest.id,
+                    username: user.username
+                },
+                data: updateRequest
+            });
+            return (0, contact_model_1.toContactResponse)(contact);
+        });
+    }
+    static remove(user, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.checkContactMustExist(user.username, id);
+            const contact = yield database_1.prismaClient.contact.delete({
+                where: {
+                    id: id,
+                    username: user.username
+                }
+            });
             return (0, contact_model_1.toContactResponse)(contact);
         });
     }

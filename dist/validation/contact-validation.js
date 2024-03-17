@@ -11,3 +11,10 @@ ContactValidation.Create = zod_1.z.object({
     email: zod_1.z.string().min(1).max(100).email().optional(),
     phone: zod_1.z.string().min(1).max(20).optional(),
 });
+ContactValidation.Update = zod_1.z.object({
+    id: zod_1.z.number().positive(),
+    first_name: zod_1.z.string().min(1).max(100),
+    last_name: zod_1.z.string().min(1).max(100),
+    email: zod_1.z.string().min(1).max(100).email().optional(),
+    phone: zod_1.z.string().min(1).max(20).optional(),
+});
