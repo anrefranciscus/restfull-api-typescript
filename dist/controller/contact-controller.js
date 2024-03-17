@@ -78,7 +78,7 @@ class ContactController {
                 };
                 const response = yield contact_service_1.ContactService.search(req.user, request);
                 logging_1.logger.debug("response", response);
-                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, handler_response_1.StatusMessage.Success);
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {
                 next(e);

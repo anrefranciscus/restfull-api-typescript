@@ -62,7 +62,7 @@ export class ContactController {
             }
             const response = await ContactService.search(req.user!, request)
             logger.debug("response", response)
-            buildApiResponse(res, HttpStatus.OK, StatusMessage.Success, StatusMessage.Success)
+            buildApiResponse(res, HttpStatus.OK, StatusMessage.Success, response)
         }catch (e) {
             next(e)
         }
