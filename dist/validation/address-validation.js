@@ -5,4 +5,28 @@ const zod_1 = require("zod");
 class AddressValidation {
 }
 exports.AddressValidation = AddressValidation;
-AddressValidation.Create = zod_1.z.object({});
+AddressValidation.Create = zod_1.z.object({
+    contact_id: zod_1.z.number().positive(),
+    street: zod_1.z.string().min(1).max(255).optional(),
+    city: zod_1.z.string().min(1).max(100).optional(),
+    province: zod_1.z.string().min(1).max(100).optional(),
+    country: zod_1.z.string().min(1).max(100),
+    postal_code: zod_1.z.string().min(1).max(100)
+});
+AddressValidation.GET = zod_1.z.object({
+    contact_id: zod_1.z.number().positive(),
+    id: zod_1.z.number().positive(),
+});
+AddressValidation.Update = zod_1.z.object({
+    id: zod_1.z.number().positive(),
+    contact_id: zod_1.z.number().positive(),
+    street: zod_1.z.string().min(1).max(255).optional(),
+    city: zod_1.z.string().min(1).max(100).optional(),
+    province: zod_1.z.string().min(1).max(100).optional(),
+    country: zod_1.z.string().min(1).max(100),
+    postal_code: zod_1.z.string().min(1).max(100)
+});
+AddressValidation.Remove = zod_1.z.object({
+    contact_id: zod_1.z.number().positive(),
+    id: zod_1.z.number().positive(),
+});
