@@ -25,7 +25,7 @@ export class AddressService {
         return toAddressResponse(address)
     }
 
-    static async checkAdressMustExist(contactId: number, addressId: number) : Promise<Address> {
+    static async checkAddressMustExist(contactId: number, addressId: number) : Promise<Address> {
         const address = await prismaClient.address.findFirst({
             where: {
                 id: addressId,
@@ -42,7 +42,7 @@ export class AddressService {
     static async get(user: User, request: GetAddressRequest) : Promise<AddressResponse> {
         const getRequest = Validation.validate(AddressValidation.GET, request)
         await ContactService.checkContactMustExist(user.username, request.contact_id)
-        const address = await this.checkAdressMustExist(getRequest.contact_id, getRequest.id)
+        const address = await this.checkAddressMustExist(getRequest.contact_id, getRequest.id)
 
         return toAddressResponse(address)
     }
@@ -50,7 +50,7 @@ export class AddressService {
     static async update(user: User, request: UpdateAddressRequest) : Promise<AddressResponse> {
         const updateRequest = Validation.validate(AddressValidation.Update, request)
         await ContactService.checkContactMustExist(user.username, request.contact_id)
-        await this.checkAdressMustExist(updateRequest.contact_id, updateRequest.id)
+        await this.checkAddressMustExist(updateRequest.contact_id, updateRequest.id)
 
         const address = await prismaClient.address.update({
             where: {
@@ -67,7 +67,7 @@ export class AddressService {
     static async remove(user: User, request: RemoveAddressRequest) : Promise<AddressResponse> {
         const removeAddressRequest = Validation.validate(AddressValidation.GET, request)
         await ContactService.checkContactMustExist(user.username, request.contact_id)
-        await this.checkAdressMustExist(removeAddressRequest.contact_id, removeAddressRequest.id)
+        await this.checkAddressMustExist(removeAddressRequest.contact_id, removeAddressRequest.id)
 
         const address = await prismaClient.address.delete({
             where: {
