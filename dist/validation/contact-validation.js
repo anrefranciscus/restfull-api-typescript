@@ -18,3 +18,10 @@ ContactValidation.Update = zod_1.z.object({
     email: zod_1.z.string().min(1).max(100).email().optional(),
     phone: zod_1.z.string().min(1).max(20).optional(),
 });
+ContactValidation.Search = zod_1.z.object({
+    name: zod_1.z.string().min(1).optional(),
+    phone: zod_1.z.string().min(1).optional(),
+    email: zod_1.z.string().min(1).optional(),
+    page: zod_1.z.number().min(1).positive(),
+    size: zod_1.z.number().min(1).positive()
+});

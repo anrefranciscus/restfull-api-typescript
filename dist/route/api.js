@@ -19,3 +19,4 @@ exports.apiRouter.post("/api/contacts", contact_controller_1.ContactController.c
 exports.apiRouter.get("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.get);
 exports.apiRouter.put("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.update);
 exports.apiRouter.delete("/api/contacts/:contactId(\\d+)", contact_controller_1.ContactController.remove);
+exports.apiRouter.get("/api/contacts", contact_controller_1.ContactController.search);

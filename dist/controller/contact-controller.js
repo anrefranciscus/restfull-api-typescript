@@ -66,5 +66,24 @@ class ContactController {
             }
         });
     }
+    static search(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const request = {
+                    name: req.query.name,
+                    phone: req.query.phone,
+                    email: req.query.email,
+                    page: req.query.page ? Number(req.query.page) : 1,
+                    size: req.query.size ? Number(req.query.size) : 10
+                };
+                const response = yield contact_service_1.ContactService.search(req.user, request);
+                logging_1.logger.debug("response", response);
+                (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, handler_response_1.StatusMessage.Success);
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+    }
 }
 exports.ContactController = ContactController;

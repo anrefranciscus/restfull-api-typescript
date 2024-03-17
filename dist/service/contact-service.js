@@ -72,5 +72,67 @@ class ContactService {
             return (0, contact_model_1.toContactResponse)(contact);
         });
     }
+    static search(user, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const searchRequest = validation_1.Validation.validate(contact_validation_1.ContactValidation.Search, request);
+            const skip = (searchRequest.page - 1) * searchRequest.size;
+            const filters = [];
+            // check if name exist
+            if (searchRequest.name) {
+                filters.push({
+                    OR: [
+                        {
+                            first_name: {
+                                contains: searchRequest.name
+                            }
+                        },
+                        {
+                            last_name: {
+                                contains: searchRequest.name
+                            }
+                        }
+                    ]
+                });
+            }
+            // check if email exist
+            if (searchRequest.email) {
+                filters.push({
+                    email: {
+                        contains: searchRequest.email
+                    }
+                });
+            }
+            // check if phone exist
+            if (searchRequest.phone) {
+                filters.push({
+                    email: {
+                        contains: searchRequest.phone
+                    }
+                });
+            }
+            const contacts = yield database_1.prismaClient.contact.findMany({
+                where: {
+                    username: user.username,
+                    AND: filters
+                },
+                take: searchRequest.size,
+                skip: skip
+            });
+            const total = yield database_1.prismaClient.contact.count({
+                where: {
+                    username: user.username,
+                    AND: filters
+                },
+            });
+            return {
+                data: contacts.map(contact => (0, contact_model_1.toContactResponse)(contact)),
+                paging: {
+                    current_page: searchRequest.page,
+                    total_page: Math.ceil(total / searchRequest.size),
+                    size: searchRequest.size
+                }
+            };
+        });
+    }
 }
 exports.ContactService = ContactService;
