@@ -12,6 +12,7 @@ import {ResponseError} from "../error/response-error";
 import bcrypt from "bcrypt"
 import {User} from "@prisma/client";
 import {generateToken} from "../utils/auth";
+import HttpStatus from 'http-status';
 
 export class UserService {
     static async register(request: CreateUserRequest) : Promise<UserResponse> {
@@ -24,7 +25,7 @@ export class UserService {
          })
 
          if(totalUserWithSameUsername !== 0) {
-             throw new ResponseError(400, "username already exist");
+             throw new ResponseError(HttpStatus.BAD_REQUEST, "username already exist");
          }
 
          registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
@@ -38,19 +39,19 @@ export class UserService {
 
     static async login(request: LoginUserRequest) : Promise<UserResponse> {
         const loginRequest = Validation.validate(UserValidation.LOGIN, request)
-        let [user] = await Promise.all([prismaClient.user.findUnique({
+        let user = await prismaClient.user.findUnique({
             where: {
                 username: loginRequest.username
             }
-        })])
+        })
 
         if (!user) {
-            throw new ResponseError(401, "Username or password is wrong")
+            throw new ResponseError(HttpStatus.UNAUTHORIZED, "Username or password is wrong")
         }
         const [isPasswordValid] = await Promise.all([bcrypt.compare(loginRequest.password, user.password)])
 
         if (!isPasswordValid) {
-            throw new ResponseError(401, "Username or password is wrong")
+            throw new ResponseError(HttpStatus.UNAUTHORIZED, "Username or password is wrong")
         }
 
         user = await prismaClient.user.update({

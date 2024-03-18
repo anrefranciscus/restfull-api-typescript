@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactService = void 0;
 const contact_model_1 = require("../model/contact-model");
@@ -15,6 +18,7 @@ const validation_1 = require("../validation/validation");
 const contact_validation_1 = require("../validation/contact-validation");
 const database_1 = require("../application/database");
 const response_error_1 = require("../error/response-error");
+const http_status_1 = __importDefault(require("http-status"));
 class ContactService {
     static create(user, request) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,7 +39,7 @@ class ContactService {
                 }
             });
             if (!contact) {
-                throw new response_error_1.ResponseError(404, "contact not found");
+                throw new response_error_1.ResponseError(http_status_1.default.NOT_FOUND, "contact not found");
             }
             return contact;
         });

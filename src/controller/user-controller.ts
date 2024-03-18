@@ -2,16 +2,15 @@ import {NextFunction, Request, Response} from "express";
 import {CreateUserRequest, LoginUserRequest, UpdateUserRequest,} from "../model/user-model";
 import {UserService} from "../service/user-service";
 import {UserRequest} from "../type/user-request";
-import {buildApiResponse, HttpStatus, StatusMessage} from "../utils/handler-response";
+import {buildApiResponse, StatusMessage} from "../utils/handler-response";
+import HttpStatus from "http-status";
 
 export class UserController {
     static async register(req: Request, res: Response, next: NextFunction) {
         try {
             const request: CreateUserRequest = req.body as CreateUserRequest;
             const response = await UserService.register(request);
-            res.status(200).json({
-                data: response
-            })
+            buildApiResponse(res, HttpStatus.CREATED, StatusMessage.Success, response)
         }catch (e) {
             next(e)
         }

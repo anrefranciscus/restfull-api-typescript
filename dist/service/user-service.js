@@ -20,6 +20,7 @@ const database_1 = require("../application/database");
 const response_error_1 = require("../error/response-error");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const auth_1 = require("../utils/auth");
+const http_status_1 = __importDefault(require("http-status"));
 class UserService {
     static register(request) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -30,7 +31,7 @@ class UserService {
                 }
             });
             if (totalUserWithSameUsername !== 0) {
-                throw new response_error_1.ResponseError(400, "username already exist");
+                throw new response_error_1.ResponseError(http_status_1.default.BAD_REQUEST, "username already exist");
             }
             registerRequest.password = yield bcrypt_1.default.hash(registerRequest.password, 10);
             const user = yield database_1.prismaClient.user.create({
@@ -42,17 +43,17 @@ class UserService {
     static login(request) {
         return __awaiter(this, void 0, void 0, function* () {
             const loginRequest = validation_1.Validation.validate(user_validation_1.UserValidation.LOGIN, request);
-            let [user] = yield Promise.all([database_1.prismaClient.user.findUnique({
-                    where: {
-                        username: loginRequest.username
-                    }
-                })]);
+            let user = yield database_1.prismaClient.user.findUnique({
+                where: {
+                    username: loginRequest.username
+                }
+            });
             if (!user) {
-                throw new response_error_1.ResponseError(401, "Username or password is wrong");
+                throw new response_error_1.ResponseError(http_status_1.default.UNAUTHORIZED, "Username or password is wrong");
             }
             const [isPasswordValid] = yield Promise.all([bcrypt_1.default.compare(loginRequest.password, user.password)]);
             if (!isPasswordValid) {
-                throw new response_error_1.ResponseError(401, "Username or password is wrong");
+                throw new response_error_1.ResponseError(http_status_1.default.UNAUTHORIZED, "Username or password is wrong");
             }
             user = yield database_1.prismaClient.user.update({
                 where: {

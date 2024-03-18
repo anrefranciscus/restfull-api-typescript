@@ -10,9 +10,8 @@ import {ContactValidation} from "../validation/contact-validation";
 import {Contact, User} from "@prisma/client";
 import {prismaClient} from "../application/database";
 import {ResponseError} from "../error/response-error";
-import {NextFunction, request} from "express";
-import {UserValidation} from "../validation/user-validation";
 import {Pageable} from "../model/page";
+import HttpStatus from "http-status";
 
 export class ContactService {
 
@@ -39,7 +38,7 @@ export class ContactService {
         })
 
         if(!contact) {
-            throw new ResponseError(404, "contact not found")
+            throw new ResponseError(HttpStatus.NOT_FOUND, "contact not found")
         }
 
         return contact
