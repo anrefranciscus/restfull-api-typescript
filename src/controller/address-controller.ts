@@ -8,6 +8,7 @@ import {
 } from "../model/address-model";
 import {AddressService} from "../service/address-service";
 import {buildApiResponse, HttpStatus, StatusMessage} from "../utils/handler-response";
+import {logger} from "../application/logging";
 
 export class AddressController {
 
@@ -28,9 +29,8 @@ export class AddressController {
                 id: Number(req.params.addressId),
                 contact_id: Number(req.params.contactId)
             }
-
             const response = await AddressService.get(req.user!, request)
-
+            logger.debug("response " + JSON.stringify(response))
             buildApiResponse(res, HttpStatus.OK, StatusMessage.Success, response)
         }catch (e){
             next(e)

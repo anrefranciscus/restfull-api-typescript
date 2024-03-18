@@ -32,7 +32,7 @@ class ContactService {
     }
     static checkContactMustExist(username, contactId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const contact = yield database_1.prismaClient.contact.findUnique({
+            const contact = yield database_1.prismaClient.contact.findFirst({
                 where: {
                     id: contactId,
                     username: username

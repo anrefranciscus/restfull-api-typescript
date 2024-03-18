@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddressController = void 0;
 const address_service_1 = require("../service/address-service");
 const handler_response_1 = require("../utils/handler-response");
+const logging_1 = require("../application/logging");
 class AddressController {
     static create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34,6 +35,7 @@ class AddressController {
                     contact_id: Number(req.params.contactId)
                 };
                 const response = yield address_service_1.AddressService.get(req.user, request);
+                logging_1.logger.debug("response " + JSON.stringify(response));
                 (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {

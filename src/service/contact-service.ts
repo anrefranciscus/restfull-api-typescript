@@ -30,7 +30,7 @@ export class ContactService {
     }
 
     static async checkContactMustExist(username: string, contactId: number) : Promise<Contact> {
-        const contact = await prismaClient.contact.findUnique({
+        const contact = await prismaClient.contact.findFirst({
             where: {
                 id: contactId ,
                 username: username

@@ -21,7 +21,8 @@ export class ContactController {
     static async get(req: UserRequest, res: Response, next: NextFunction) {
         try {
             const contactId = Number(req.params.contactId)
-            const response = ContactService.get(req.user!, contactId)
+            const response = await ContactService.get(req.user!, contactId)
+            logger.debug("response : " + JSON.stringify(response))
             buildApiResponse(res, HttpStatus.OK, StatusMessage.Success, response)
         }catch (e) {
             next(e)

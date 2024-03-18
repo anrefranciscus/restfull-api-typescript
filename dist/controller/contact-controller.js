@@ -31,7 +31,8 @@ class ContactController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const contactId = Number(req.params.contactId);
-                const response = contact_service_1.ContactService.get(req.user, contactId);
+                const response = yield contact_service_1.ContactService.get(req.user, contactId);
+                logging_1.logger.debug("response : " + JSON.stringify(response));
                 (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }
             catch (e) {
