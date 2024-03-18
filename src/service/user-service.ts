@@ -48,7 +48,7 @@ export class UserService {
         if (!user) {
             throw new ResponseError(HttpStatus.UNAUTHORIZED, "Username or password is wrong")
         }
-        const [isPasswordValid] = await Promise.all([bcrypt.compare(loginRequest.password, user.password)])
+        const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password)
 
         if (!isPasswordValid) {
             throw new ResponseError(HttpStatus.UNAUTHORIZED, "Username or password is wrong")
@@ -59,7 +59,7 @@ export class UserService {
                 username: loginRequest.username
             },
             data: {
-                token: generateToken(request.username)
+                token: generateToken(loginRequest.username)
             }
         })
 

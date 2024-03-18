@@ -17,7 +17,7 @@ class AddressController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = req.body;
-                request.contact_id = Number(req.params.contact_id);
+                request.contact_id = Number(req.params.contactId);
                 const response = yield address_service_1.AddressService.create(req.user, request);
                 (0, handler_response_1.buildApiResponse)(res, handler_response_1.HttpStatus.OK, handler_response_1.StatusMessage.Success, response);
             }

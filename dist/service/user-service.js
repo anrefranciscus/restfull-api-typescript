@@ -51,7 +51,7 @@ class UserService {
             if (!user) {
                 throw new response_error_1.ResponseError(http_status_1.default.UNAUTHORIZED, "Username or password is wrong");
             }
-            const [isPasswordValid] = yield Promise.all([bcrypt_1.default.compare(loginRequest.password, user.password)]);
+            const isPasswordValid = yield bcrypt_1.default.compare(loginRequest.password, user.password);
             if (!isPasswordValid) {
                 throw new response_error_1.ResponseError(http_status_1.default.UNAUTHORIZED, "Username or password is wrong");
             }
@@ -60,7 +60,7 @@ class UserService {
                     username: loginRequest.username
                 },
                 data: {
-                    token: (0, auth_1.generateToken)(request.username)
+                    token: (0, auth_1.generateToken)(loginRequest.username)
                 }
             });
             const response = (0, user_model_1.toUserResponse)(user);
