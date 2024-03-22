@@ -25,5 +25,5 @@ exports.apiRouter.get("/api/contacts", contact_controller_1.ContactController.se
 exports.apiRouter.post("/api/contacts/:contactId(\\d+)/addresses", address_controller_1.AddressController.create);
 exports.apiRouter.get("/api/contacts/:contactId(\\d+)/addresses/:addressId(\\d+)", address_controller_1.AddressController.get);
 exports.apiRouter.put("/api/contacts/:contactId(\\d+)/addresses/:addressId(\\d+)", address_controller_1.AddressController.update);
-exports.apiRouter.delete("/api/contacts/:contactId(\\d+)/addresses/addressId(\\d+)", address_controller_1.AddressController.remove);
+exports.apiRouter.delete("/api/contacts/:contactId(\\d+)/addresses/:addressId(\\d+)", address_controller_1.AddressController.remove);
 exports.apiRouter.get("/api/contacts/:contactId(\\d+)/addresses", address_controller_1.AddressController.list);
